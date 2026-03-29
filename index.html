@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahayak AI - Home</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#38bdf8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #080d13; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: #253247; padding: 30px; width: 420px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin: 20px; }
+        
+        /* Logo Styling */
+        .logo-box { text-align: center; margin-bottom: 10px; }
+        .logo-box img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; }
+        
+        h2 { text-align: center; color: #38bdf8; margin: 10px 0 20px 0; }
+        .lang-toggle { text-align: right; margin-bottom: 15px; }
+        select, input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #334155; background: #1a1a1b; color: white; box-sizing: border-box; outline: none; }
+        input:focus { border-color: #38bdf8; }
+        label { font-size: 0.85em; color: #38bdf8; margin-top: 10px; display: block; }
+        button { width: 100%; padding: 12px; margin-top: 20px; background: linear-gradient(45deg, #38bdf8, #6366f1); border: none; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { transform: scale(1.02); opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="lang-toggle">
+        <select id="langSelect" onchange="changeLanguage()" style="width: auto;">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="mr">मराठी</option>
+        </select>
+    </div>
+
+    <div class="logo-box">
+        <img src="logo.png" alt="Sahayak AI Logo" onerror="this.src='https://via.placeholder.com/80?text=AI'">
+    </div>
+    
+    <h2 id="ui-title">Sahayak AI</h2>
+
+    <form id="form">
+        <input type="text" id="name" placeholder="Full Name" required>
+        <input type="number" id="age" placeholder="Age" required min="1" max="100">
+        
+        <label id="ui-gen-lab">Gender</label>
+        <select id="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="any">Other</option>
+        </select>
+
+        <label id="ui-caste-lab">Caste Category</label>
+        <select id="caste">
+            <option value="any">General</option>
+            <option value="obc">OBC</option>
+            <option value="sc">SC</option>
+            <option value="st">ST</option>
+        </select>
+
+        <input type="number" id="income" placeholder="Annual Income" required>
+        <input type="text" id="occupation" placeholder="Occupation (e.g. farmer, student)" required>
+        <input type="text" id="education" placeholder="Education (e.g. 10th, Graduate)">
+        
+        <button type="submit" id="ui-btn">Find Schemes</button>
+    </form>
+</div>
+
+<script>
+const translations = {
+    en: { title: "Sahayak AI", name: "Full Name", age: "Age", gen: "Gender", caste: "Caste Category", income: "Annual Income", occ: "Occupation", edu: "Education", btn: "Find Schemes" },
+    hi: { title: "सहायक AI", name: "पूरा नाम", age: "उम्र", gen: "लिंग", caste: "जाति श्रेणी", income: "वार्षिक आय", occ: "पेशा", edu: "शिक्षा", btn: "योजनाएँ खोजें" },
+    mr: { title: "सहायक AI", name: "पूर्ण नाव", age: "वय", gen: "लिंग", caste: "जात प्रवर्ग", income: "वार्षिक उत्पन्न", occ: "व्यवसाय", edu: "शिक्षण", btn: "योजना शोधा" }
+};
+
+function changeLanguage() {
+    const lang = document.getElementById("langSelect").value;
+    const t = translations[lang];
+
+    document.getElementById("ui-title").innerText = t.title;
+    document.getElementById("ui-gen-lab").innerText = t.gen;
+    document.getElementById("ui-caste-lab").innerText = t.caste;
+    document.getElementById("ui-btn").innerText = t.btn;
+    
+    document.getElementById("name").placeholder = t.name;
+    document.getElementById("age").placeholder = t.age; 
+    document.getElementById("income").placeholder = t.income;
+    document.getElementById("occupation").placeholder = t.occ;
+    document.getElementById("education").placeholder = t.edu;
+}
+
+document.getElementById("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = {
+        name: document.getElementById("name").value,
+        age: document.getElementById("age").value,
+        gender: document.getElementById("gender").value,
+        caste: document.getElementById("caste").value,
+        income: document.getElementById("income").value,
+        occupation: document.getElementById("occupation").value,
+        education: document.getElementById("education").value,
+        lang: document.getElementById("langSelect").value
+    };
+    localStorage.setItem("userData", JSON.stringify(data));
+    window.location.href = "results.html";
+});
+
+// --- PWA SERVICE WORKER REGISTRATION ---
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('Sahayak PWA Ready!'))
+            .catch(err => console.log('PWA Registration Failed', err));
+    });
+}
+</script>
+</body>
+</html>

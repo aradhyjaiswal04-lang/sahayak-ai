@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - Sahayak AI</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#38bdf8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <style>
+        body {
+            background: #0f172a;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .btn-back {
+            background: #334155;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .btn-back:hover {
+            background: #475569;
+        }
+
+        #res-title {
+            text-align: center;
+            color: #38bdf8;
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 16px;
+            border-top: 6px solid #38bdf8;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .explanation {
+            font-size: 0.9em;
+            color: #94a3b8;
+            font-style: italic;
+            border-left: 3px solid #38bdf8;
+            padding-left: 10px;
+            margin: 15px 0;
+        }
+
+        .docs {
+            background: #334155;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-action {
+            background: #334155;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-action:hover {
+            background: #475569;
+        }
+
+        .btn-apply {
+            grid-column: span 2;
+            background: #38bdf8;
+            color: #0f172a;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-apply:hover {
+            background: #7dd3fc;
+        }
+
+        .no-results {
+            text-align: center;
+            margin-top: 100px;
+            color: #94a3b8;
+        }
+
+        #noupe-root {
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-nav">
+            <a href="index.html" class="btn-back">← Back</a>
+        </div>
+        <h1 id="res-title">Checking Eligibility...</h1>
+        <div id="output"></div>
+    </div>
+
+    <script src='https://www.noupe.com/embed/019d36025d177e088cc9e712fa2b88785d76.js'></script>
+
+    <script>
+        const langPack = {
+            en: { title: "Your Eligible Schemes", none: "❌ No schemes found.", btn: "Apply Now", speak: "🔊 Listen", share: "📲 Share" },
+            hi: { title: "आपकी पात्र योजनाएं", none: "❌ कोई योजना नहीं मिली।", btn: "अभी आवेदन करें", speak: "🔊 सुनें", share: "📲 साझा करें" },
+            mr: { title: "तुमच्या पात्र योजना", none: "❌ कोणतीही योजना सापडली नाही.", btn: "आता अर्ज करा", speak: "🔊 ऐका", share: "📲 शेअर करा" }
+        };
+
+        function speakScheme(name, benefit, explanation, lang) {
+            window.speechSynthesis.cancel();
+            const text = `${name}. ${benefit}. ${explanation}`;
+            const msg = new SpeechSynthesisUtterance(text);
+
+            if (lang === 'hi') msg.lang = 'hi-IN';
+            else if (lang === 'mr') msg.lang = 'mr-IN';
+            else msg.lang = 'en-US';
+
+            window.speechSynthesis.speak(msg);
+        }
+
+        function shareScheme(name, link) {
+            const message = `*Sahayak AI Selection* \n\n*Scheme:* ${name}\n*Apply here:* ${link}\n\n_Generated by Sahayak AI_`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        async function loadResults() {
+            const userData = JSON.parse(localStorage.getItem("userData"));
+            if (!userData) { window.location.href = "index.html"; return; }
+
+            const lang = userData.lang || 'en';
+            const outputDiv = document.getElementById("output");
+            document.getElementById("res-title").innerText = langPack[lang].title;
+
+            try {
+                // 1. Fetch JSON directly
+                const response = await fetch("schemes.json");
+                const allSchemes = await response.json();
+
+                // 2. Filter Logic
+                const matchedSchemes = allSchemes.filter(s => {
+                    const ageMatch = parseInt(userData.age) >= s.min_age && parseInt(userData.age) <= s.max_age;
+                    const incomeMatch = parseInt(userData.income) <= s.max_income;
+                    const genderMatch = s.gender === "any" || s.gender.toLowerCase() === userData.gender.toLowerCase();
+                    const occMatch = s.occupation === "any" || userData.occupation.toLowerCase().includes(s.occupation.toLowerCase());
+                    const casteMatch = s.caste === "any" || s.caste.toLowerCase() === userData.caste.toLowerCase();
+
+                    return ageMatch && incomeMatch && genderMatch && occMatch && casteMatch;
+                });
+
+                // 3. Render Cards
+                if (matchedSchemes.length === 0) {
+                    outputDiv.innerHTML = `<div class="no-results"><h3>${langPack[lang].none}</h3></div>`;
+                } else {
+                    outputDiv.innerHTML = `<div class="grid">` + matchedSchemes.map(s => {
+                        const safeName = s.name.replace(/'/g, "\\'");
+                        const safeBenefit = s.benefit.replace(/'/g, "\\'");
+                        const safeExplanation = s.explanation.replace(/'/g, "\\'");
+
+                        return `
+                        <div class="card">
+                            <h3>${s.name}</h3>
+                            <p><b>Benefit:</b> ${s.benefit}</p>
+                            <div class="explanation">✨ ${s.explanation}</div>
+                            <div class="docs">📄 <b>Required Documents:</b><br>${s.documents.join(", ")}</div>
+                            <div class="actions">
+                                <button class="btn-action" onclick="speakScheme('${safeName}', '${safeBenefit}', '${safeExplanation}', '${lang}')">${langPack[lang].speak}</button>
+                                <button class="btn-action" onclick="shareScheme('${safeName}', '${s.link}')">${langPack[lang].share}</button>
+                                <a href="${s.link}" class="btn-apply" target="_blank">${langPack[lang].btn}</a>
+                            </div>
+                        </div>`;
+                    }).join('') + `</div>`;
+                }
+            } catch (err) {
+                console.error(err);
+                outputDiv.innerHTML = `<div class="no-results"><h3>⚠️ Error loading schemes.json!</h3></div>`;
+            }
+        }
+
+        // PWA Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Sahayak PWA Ready!'))
+                    .catch(err => console.log('PWA Registration Failed', err));
+            });
+        }
+
+        window.onload = loadResults;
+    </script>
+</body>
+</html>
