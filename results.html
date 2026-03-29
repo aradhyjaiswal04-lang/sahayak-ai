@@ -4,39 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Results - Sahayak AI</title>
-
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#38bdf8">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        body { background: #0f172a; color: white; font-family: 'Segoe UI', sans-serif; padding: 20px; margin: 0; }
+        :root {
+            --primary: #6366f1;
+            --accent: #38bdf8;
+            --success: #10b981;
+            --bg: #0f172a;
+            --glass: rgba(30, 41, 59, 0.7);
+        }
+
+        body { 
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            color: white; 
+            font-family: 'Inter', sans-serif; 
+            padding: 20px; 
+            margin: 0; 
+            min-height: 100vh;
+        }
+
         .container { max-width: 1200px; margin: 0 auto; padding-bottom: 100px; }
-        .header-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
-        .btn-back { background: #334155; color: white; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; transition: 0.2s; }
-        .btn-back:hover { background: #475569; }
-        #res-title { text-align: center; color: #38bdf8; font-size: 2rem; margin: 20px 0; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .card { background: #1e293b; padding: 25px; border-radius: 16px; border-top: 6px solid #38bdf8; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); transition: 0.3s; display: flex; flex-direction: column; }
-        .card:hover { transform: translateY(-5px); }
-        .explanation { font-size: 0.9em; color: #94a3b8; font-style: italic; border-left: 3px solid #38bdf8; padding-left: 10px; margin: 15px 0; }
-        .docs { background: #334155; padding: 12px; border-radius: 8px; font-size: 0.85em; margin-bottom: 20px; flex-grow: 1; }
-        .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .btn-action { background: #334155; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .btn-action:hover { background: #475569; }
-        .btn-apply { grid-column: span 2; background: #38bdf8; color: #0f172a; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.2s; }
-        .btn-apply:hover { background: #7dd3fc; }
-        .no-results { text-align: center; margin-top: 100px; color: #94a3b8; }
-        #noupe-root { z-index: 9999; }
+        .header-nav { display: flex; justify-content: flex-start; align-items: center; margin: 20px 0; }
+
+        .btn-back { 
+            background: rgba(255, 255, 255, 0.05); 
+            color: var(--accent); 
+            text-decoration: none; 
+            padding: 10px 20px; 
+            border-radius: 14px; 
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.3s; 
+        }
+
+        #res-title {
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            background-clip: text; 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            font-weight: 800;
+            margin: 20px 0 40px 0;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 25px; }
+
+        .card { 
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 25px; 
+            border-radius: 24px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            display: flex; 
+            flex-direction: column; 
+            opacity: 0;
+            animation: fadeInCard 0.6s ease forwards;
+        }
+
+        @keyframes fadeInCard { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card:hover { transform: translateY(-8px); border-color: var(--accent); }
+        .card h3 { margin: 0 0 10px 0; color: var(--accent); font-size: 1.4rem; font-weight: 700; }
+        .benefit-tag { color: var(--success); font-weight: 800; font-size: 1.2rem; margin: 10px 0; display: block; }
+        .explanation { font-size: 0.95em; color: #cbd5e1; font-style: italic; border-left: 4px solid var(--accent); padding-left: 12px; margin: 15px 0; }
+        .docs { background: rgba(15, 23, 42, 0.5); padding: 15px; border-radius: 16px; font-size: 0.85em; margin-bottom: 20px; flex-grow: 1; }
+        .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .btn-action { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 600; }
+        .btn-apply { grid-column: span 2; background: linear-gradient(135deg, #6366f1, #38bdf8); color: white; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; font-weight: 800; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="header-nav">
-            <a href="index.html" class="btn-back">← Back</a>
-        </div>
+        <div class="header-nav"><a href="index.html" class="btn-back">← Back</a></div>
         <h1 id="res-title">Checking Eligibility...</h1>
         <div id="output"></div>
     </div>
@@ -45,43 +91,167 @@
 
     <script>
         const langPack = {
-            en: { title: "Your Eligible Schemes", none: "❌ No schemes found.", btn: "Apply Now", speak: "🔊 Listen", share: "📲 Share" },
-            hi: { title: "आपकी पात्र योजनाएं", none: "❌ कोई योजना नहीं मिली।", btn: "अभी आवेदन करें", speak: "🔊 सुनें", share: "📲 साझा करें" },
-            mr: { title: "तुमच्या पात्र योजना", none: "❌ कोणतीही योजना सापडली नाही.", btn: "आता अर्ज करा", speak: "🔊 ऐका", share: "📲 शेअर करा" }
+            en: { title: "Your Eligible Schemes", none: "❌ No schemes found.", btn: "Apply Now", speak: "🔊 Listen", share: "📲 Share", docLab: "Required Documents" },
+            hi: { title: "आपकी पात्र योजनाएं", none: "❌ कोई योजना नहीं मिली।", btn: "अभी आवेदन करें", speak: "🔊 सुनें", share: "📲 साझा करें", docLab: "आवश्यक दस्तावेज़" },
+            mr: { title: "तुमच्या पात्र योजना", none: "❌ कोणतीही योजना सापडली नाही.", btn: "आता अर्ज करा", speak: "🔊 ऐका", share: "📲 शेअर करा", docLab: "आवश्यक कागदपत्रे" }
         };
 
-        // 25 SCHEMES DATABASE
         const allSchemes = [
-            { "name": "PM-Kisan Samman Nidhi", "min_age": 18, "max_age": 100, "max_income": 500000, "gender": "any", "caste": "any", "occupation": "farmer", "benefit": "₹6,000/year", "explanation": "Direct financial support for farmers.", "documents": ["Aadhar", "Land Records"], "link": "https://pmkisan.gov.in/" },
-            { "name": "PM Matru Vandana Yojana", "min_age": 19, "max_age": 45, "max_income": 800000, "gender": "female", "caste": "any", "occupation": "any", "benefit": "₹5,000 Incentives", "explanation": "Pregnancy support and incentives.", "documents": ["MCP Card", "Aadhar"], "link": "https://wcd.nic.in/" },
-            { "name": "PM Vishwakarma", "min_age": 18, "max_age": 100, "max_income": 1000000, "gender": "any", "caste": "any", "occupation": "artisan", "benefit": "₹15,000 Toolkit", "explanation": "Support for traditional artisans.", "documents": ["Aadhar", "Skill ID"], "link": "https://pmvishwakarma.gov.in/" },
-            { "name": "Ayushman Bharat (PM-JAY)", "min_age": 0, "max_age": 100, "max_income": 250000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "₹5 Lakh Insurance", "explanation": "Free hospital treatment.", "documents": ["Ration Card", "Aadhar"], "link": "https://nha.gov.in/" },
-            { "name": "Sukanya Samriddhi Yojana", "min_age": 0, "max_age": 10, "max_income": 10000000, "gender": "female", "caste": "any", "occupation": "student", "benefit": "High Interest Savings", "explanation": "For girl child's future.", "documents": ["Birth Certificate", "Aadhar"], "link": "https://www.indiapost.gov.in/" },
-            { "name": "PM Awas Yojana (Gramin)", "min_age": 18, "max_age": 100, "max_income": 300000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "Funds for House", "explanation": "Build your own home.", "documents": ["Aadhar", "Job Card"], "link": "https://pmayg.nic.in/" },
-            { "name": "Atal Pension Yojana", "min_age": 18, "max_age": 40, "max_income": 1000000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "Monthly Pension", "explanation": "Pension after age 60.", "documents": ["Bank Account", "Aadhar"], "link": "https://www.npscra.nsdl.co.in/" },
-            { "name": "PM Ujjwala Yojana", "min_age": 18, "max_age": 100, "max_income": 200000, "gender": "female", "caste": "any", "occupation": "any", "benefit": "Free Gas Connection", "explanation": "Clean cooking fuel.", "documents": ["BPL Card", "Aadhar"], "link": "https://www.pmuy.gov.in/" },
-            { "name": "Stand-Up India", "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "female", "caste": "sc", "occupation": "business", "benefit": "₹10L - ₹1Cr Loan", "explanation": "For new businesses.", "documents": ["Project Report", "Caste Cert"], "link": "https://www.standupmitra.in/" },
-            { "name": "MGNREGA", "min_age": 18, "max_age": 60, "max_income": 1000000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "100 Days Work", "explanation": "Guaranteed employment.", "documents": ["Job Card", "Aadhar"], "link": "https://nrega.nic.in/" },
-            { "name": "PM Shram Yogi Maandhan", "min_age": 18, "max_age": 40, "max_income": 180000, "gender": "any", "caste": "any", "occupation": "worker", "benefit": "₹3,000 Pension", "explanation": "For unorganized workers.", "documents": ["Aadhar", "Bank Passbook"], "link": "https://maandhan.in/" },
-            { "name": "PM Mudra Yojana", "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "business", "benefit": "Loan up to ₹10L", "explanation": "Small business funding.", "documents": ["Business Plan", "Aadhar"], "link": "https://www.mudra.org.in/" },
-            { "name": "PM SVANidhi", "min_age": 18, "max_age": 100, "max_income": 500000, "gender": "any", "caste": "any", "occupation": "vendor", "benefit": "Working Capital Loan", "explanation": "For street vendors.", "documents": ["Vending Cert", "Aadhar"], "link": "https://pmsvanidhi.mohua.gov.in/" },
-            { "name": "National Scholarship (NSP)", "min_age": 6, "max_age": 25, "max_income": 200000, "gender": "any", "caste": "any", "occupation": "student", "benefit": "Study Scholarship", "explanation": "Financial help for school.", "documents": ["Marksheet", "Income Cert"], "link": "https://scholarships.gov.in/" },
-            { "name": "PM Fasal Bima Yojana", "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "farmer", "benefit": "Crop Insurance", "explanation": "Support for crop loss.", "documents": ["Land Records", "Sowing Cert"], "link": "https://pmfby.gov.in/" },
-            { "name": "PM Daksh Yojana", "min_age": 18, "max_age": 45, "max_income": 300000, "gender": "any", "caste": "sc", "occupation": "any", "benefit": "Skill Training", "explanation": "Free skill development.", "documents": ["Caste Cert", "Aadhar"], "link": "https://pmdaksh.dosje.gov.in/" },
-            { "name": "Kisan Credit Card (KCC)", "min_age": 18, "max_age": 75, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "farmer", "benefit": "Low Interest Loan", "explanation": "For agricultural needs.", "documents": ["Land Records", "ID Proof"], "link": "https://www.nabard.org/" },
-            { "name": "PM Jeevan Jyoti Bima", "min_age": 18, "max_age": 50, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "₹2 Lakh Life Cover", "explanation": "Term insurance.", "documents": ["Bank Consent", "Aadhar"], "link": "https://jansuraksha.gov.in/" },
-            { "name": "PM Suraksha Bima Yojana", "min_age": 18, "max_age": 70, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "₹2 Lakh Accident Cover", "explanation": "Accidental insurance.", "documents": ["Bank Consent", "Aadhar"], "link": "https://jansuraksha.gov.in/" },
-            { "name": "PM Employment Generation", "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "business", "benefit": "Subsidy up to 35%", "explanation": "For starting industries.", "documents": ["Project Report", "Aadhar"], "link": "https://www.kviconline.gov.in/" },
-            { "name": "Post Matric Scholarship", "min_age": 15, "max_age": 30, "max_income": 250000, "gender": "any", "caste": "sc", "occupation": "student", "benefit": "Fee Waiver", "explanation": "Higher education help.", "documents": ["Caste Cert", "Marksheet"], "link": "https://socialjustice.gov.in/" },
-            { "name": "Mahila Samman Savings", "min_age": 0, "max_age": 100, "gender": "female", "caste": "any", "occupation": "any", "max_income": 10000000, "benefit": "7.5% Fixed Interest", "explanation": "Small savings for women.", "documents": ["Aadhar", "PAN Card"], "link": "https://www.indiapost.gov.in/" },
-            { "name": "Deendayal Antyodaya (DAY)", "min_age": 18, "max_age": 60, "max_income": 100000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "SHG Support", "explanation": "Livelihood for poor.", "documents": ["BPL Cert", "Aadhar"], "link": "https://aajeevika.gov.in/" },
-            { "name": "Vidyalakshmi Loan", "min_age": 17, "max_age": 35, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "student", "benefit": "Education Loan", "explanation": "Single portal for loans.", "documents": ["Admission Proof", "PAN"], "link": "https://www.vidyalakshmi.co.in/" },
-            { "name": "PM Swasthya Suraksha", "min_age": 0, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "Tertiary Healthcare", "explanation": "Better hospital treatment.", "documents": ["Aadhar"], "link": "https://pmssy-mohfw.nic.in/" }
+            { 
+                "en": { "name": "PM-Kisan Samman Nidhi", "benefit": "₹6,000/year", "explanation": "Direct financial support for farmers." },
+                "hi": { "name": "पीएम-किसान सम्मान निधि", "benefit": "₹6,000/वर्ष", "explanation": "किसानों के लिए सीधी वित्तीय सहायता।" },
+                "mr": { "name": "पीएम-किसान सन्मान निधी", "benefit": "₹6,000/वर्ष", "explanation": "शेतकऱ्यांसाठी थेट आर्थिक मदत।" },
+                "min_age": 18, "max_age": 100, "max_income": 500000, "gender": "any", "caste": "any", "occupation": "farmer", "documents": ["Aadhar", "Land Records"], "link": "https://pmkisan.gov.in/" 
+            },
+            { 
+                "en": { "name": "PM Matru Vandana Yojana", "benefit": "₹5,000 Incentives", "explanation": "Pregnancy support and incentives." },
+                "hi": { "name": "पीएम मातृ वंदना योजना", "benefit": "₹5,000 प्रोत्साहन", "explanation": "गर्भावस्था सहायता और प्रोत्साहन।" },
+                "mr": { "name": "पीएम मातृ वंदना योजना", "benefit": "₹5,000 प्रोत्साहन", "explanation": "गरोदरपण सहायता आणि प्रोत्साहन।" },
+                "min_age": 19, "max_age": 45, "max_income": 800000, "gender": "female", "caste": "any", "occupation": "any", "documents": ["MCP Card", "Aadhar"], "link": "https://wcd.nic.in/" 
+            },
+            { 
+                "en": { "name": "PM Vishwakarma", "benefit": "₹15,000 Toolkit", "explanation": "Support for traditional artisans." },
+                "hi": { "name": "पीएम विश्वकर्मा", "benefit": "₹15,000 टूलकिट", "explanation": "पारंपरिक कारीगरों के लिए सहायता।" },
+                "mr": { "name": "पीएम विश्वकर्मा", "benefit": "₹15,000 टूलकिट", "explanation": "पारंपारिक कारागिरांसाठी मदत।" },
+                "min_age": 18, "max_age": 100, "max_income": 1000000, "gender": "any", "caste": "any", "occupation": "artisan", "documents": ["Aadhar", "Skill ID"], "link": "https://pmvishwakarma.gov.in/" 
+            },
+            { 
+                "en": { "name": "Ayushman Bharat (PM-JAY)", "benefit": "₹5 Lakh Insurance", "explanation": "Free hospital treatment." },
+                "hi": { "name": "आयुष्मान भारत (PM-JAY)", "benefit": "₹5 लाख बीमा", "explanation": "मुफ्त अस्पताल उपचार।" },
+                "mr": { "name": "आयुष्मान भारत (PM-JAY)", "benefit": "₹5 लाख विमा", "explanation": "मोफत रुग्णालय उपचार।" },
+                "min_age": 0, "max_age": 100, "max_income": 250000, "gender": "any", "caste": "any", "occupation": "any", "documents": ["Ration Card", "Aadhar"], "link": "https://nha.gov.in/" 
+            },
+            { 
+                "en": { "name": "Sukanya Samriddhi Yojana", "benefit": "High Interest Savings", "explanation": "For girl child's future." },
+                "hi": { "name": "सुकन्या समृद्धि योजना", "benefit": "उच्च ब्याज बचत", "explanation": "बालिका के भविष्य के लिए।" },
+                "mr": { "name": "सुकन्या समृद्धी योजना", "benefit": "उच्च व्याज बचत", "explanation": "मुलीच्या भविष्यासाठी।" },
+                "min_age": 0, "max_age": 10, "max_income": 10000000, "gender": "female", "caste": "any", "occupation": "student", "documents": ["Birth Certificate", "Aadhar"], "link": "https://www.indiapost.gov.in/" 
+            },
+            { 
+                "en": { "name": "PM Awas Yojana (Gramin)", "benefit": "Funds for House", "explanation": "Build your own home." },
+                "hi": { "name": "पीएम आवास योजना (ग्रामीण)", "benefit": "घर के लिए धन", "explanation": "अपना खुद का घर बनाएं।" },
+                "mr": { "name": "पीएम आवास योजना (ग्रामीण)", "benefit": "घरासाठी निधी", "explanation": "स्वतःचे घर बांधा।" },
+                "min_age": 18, "max_age": 100, "max_income": 300000, "gender": "any", "caste": "any", "occupation": "any", "documents": ["Aadhar", "Job Card"], "link": "https://pmayg.nic.in/" 
+            },
+            { 
+                "en": { "name": "Atal Pension Yojana", "benefit": "Monthly Pension", "explanation": "Pension after age 60." },
+                "hi": { "name": "अटल पेंशन योजना", "benefit": "मासिक पेंशन", "explanation": "60 वर्ष की आयु के बाद पेंशन।" },
+                "mr": { "name": "अटल पेन्शन योजना", "benefit": "मासिक पेन्शन", "explanation": "वयाच्या ६० वर्षांनंतर पेन्शन।" },
+                "min_age": 18, "max_age": 40, "max_income": 1000000, "gender": "any", "caste": "any", "occupation": "any", "documents": ["Bank Account", "Aadhar"], "link": "https://www.npscra.nsdl.co.in/" 
+            },
+            { 
+                "en": { "name": "PM Ujjwala Yojana", "benefit": "Free Gas Connection", "explanation": "Clean cooking fuel." },
+                "hi": { "name": "पीएम उज्ज्वला योजना", "benefit": "मुफ्त गैस कनेक्शन", "explanation": "स्वच्छ खाना पकाने का ईंधन।" },
+                "mr": { "name": "पीएम उज्ज्वला योजना", "benefit": "मोफत गॅस कनेक्शन", "explanation": "स्वच्छ स्वयंपाकाचे इंधन।" },
+                "min_age": 18, "max_age": 100, "max_income": 200000, "gender": "female", "caste": "any", "occupation": "any", "documents": ["BPL Card", "Aadhar"], "link": "https://www.pmuy.gov.in/" 
+            },
+            { 
+                "en": { "name": "Stand-Up India", "benefit": "₹10L - ₹1Cr Loan", "explanation": "For new businesses." },
+                "hi": { "name": "स्टैंड-अप इंडिया", "benefit": "₹10L - ₹1Cr ऋण", "explanation": "नए व्यवसायों के लिए।" },
+                "mr": { "name": "स्टँड-अप इंडिया", "benefit": "₹10L - ₹1Cr कर्ज", "explanation": "नवीन व्यवसायांसाठी।" },
+                "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "female", "caste": "sc", "occupation": "business", "documents": ["Project Report", "Caste Cert"], "link": "https://www.standupmitra.in/" 
+            },
+            { 
+                "en": { "name": "MGNREGA", "benefit": "100 Days Work", "explanation": "Guaranteed employment." },
+                "hi": { "name": "मनरेगा (MGNREGA)", "benefit": "100 दिन का काम", "explanation": "गारंटीकृत रोजगार।" },
+                "mr": { "name": "मनरेगा (MGNREGA)", "benefit": "१०० दिवसांचे काम", "explanation": "खात्रीशीर रोजगार।" },
+                "min_age": 18, "max_age": 60, "max_income": 1000000, "gender": "any", "caste": "any", "occupation": "any", "documents": ["Job Card", "Aadhar"], "link": "https://nrega.nic.in/" 
+            },
+            { 
+                "en": { "name": "PM Shram Yogi Maandhan", "benefit": "₹3,000 Pension", "explanation": "For unorganized workers." },
+                "hi": { "name": "पीएम श्रम योगी मानधन", "benefit": "₹3,000 पेंशन", "explanation": "असंगठित श्रमिकों के लिए।" },
+                "mr": { "name": "पीएम श्रम योगी मानधन", "benefit": "₹3,000 पेन्शन", "explanation": "असंघटित कामगारांसाठी।" },
+                "min_age": 18, "max_age": 40, "max_income": 180000, "gender": "any", "caste": "any", "occupation": "worker", "documents": ["Aadhar", "Bank Passbook"], "link": "https://maandhan.in/" 
+            },
+            { 
+                "en": { "name": "PM Mudra Yojana", "benefit": "Loan up to ₹10L", "explanation": "Small business funding." },
+                "hi": { "name": "पीएम मुद्रा योजना", "benefit": "₹10 लाख तक ऋण", "explanation": "छोटे व्यवसाय के लिए धन।" },
+                "mr": { "name": "पीएम मुद्रा योजना", "benefit": "₹१० लाखांपर्यंत कर्ज", "explanation": "लहान व्यवसायांसाठी निधी।" },
+                "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "business", "documents": ["Business Plan", "Aadhar"], "link": "https://www.mudra.org.in/" 
+            },
+            { 
+                "en": { "name": "PM SVANidhi", "benefit": "Working Capital Loan", "explanation": "For street vendors." },
+                "hi": { "name": "पीएम स्वनिधि", "benefit": "कार्यशील पूंजी ऋण", "explanation": "रेहड़ी-पटरी वालों के लिए।" },
+                "mr": { "name": "पीएम स्वनिधी", "benefit": "खेळते भांडवल कर्ज", "explanation": "फेरीवाल्यांसाठी।" },
+                "min_age": 18, "max_age": 100, "max_income": 500000, "gender": "any", "caste": "any", "occupation": "vendor", "documents": ["Vending Cert", "Aadhar"], "link": "https://pmsvanidhi.mohua.gov.in/" 
+            },
+            { 
+                "en": { "name": "National Scholarship (NSP)", "benefit": "Study Scholarship", "explanation": "Financial help for school." },
+                "hi": { "name": "राष्ट्रीय छात्रवृत्ति (NSP)", "benefit": "अध्ययन छात्रवृत्ति", "explanation": "स्कूल के लिए वित्तीय सहायता।" },
+                "mr": { "name": "राष्ट्रीय शिष्यवृत्ती (NSP)", "benefit": "अभ्यास शिष्यवृत्ती", "explanation": "शाळेसाठी आर्थिक मदत।" },
+                "min_age": 6, "max_age": 25, "max_income": 200000, "gender": "any", "caste": "any", "occupation": "student", "documents": ["Marksheet", "Income Cert"], "link": "https://scholarships.gov.in/" 
+            },
+            { 
+                "en": { "name": "PM Fasal Bima Yojana", "benefit": "Crop Insurance", "explanation": "Support for crop loss." },
+                "hi": { "name": "पीएम फसल बीमा योजना", "benefit": "फसल बीमा", "explanation": "फसल नुकसान के लिए सहायता।" },
+                "mr": { "name": "पीएम फसल विमा योजना", "benefit": "पीक विमा", "explanation": "पीक नुकसानीसाठी मदत।" },
+                "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "farmer", "documents": ["Land Records", "Sowing Cert"], "link": "https://pmfby.gov.in/" 
+            },
+            { 
+                "en": { "name": "PM Daksh Yojana", "benefit": "Skill Training", "explanation": "Free skill development." },
+                "hi": { "name": "पीएम दक्ष योजना", "benefit": "कौशल प्रशिक्षण", "explanation": "नि: शुल्क कौशल विकास।" },
+                "mr": { "name": "पीएम दक्ष योजना", "benefit": "कौशल्य प्रशिक्षण", "explanation": "मोफत कौशल्य विकास।" },
+                "min_age": 18, "max_age": 45, "max_income": 300000, "gender": "any", "caste": "sc", "occupation": "any", "documents": ["Caste Cert", "Aadhar"], "link": "https://pmdaksh.dosje.gov.in/" 
+            },
+            { 
+                "en": { "name": "Kisan Credit Card (KCC)", "benefit": "Low Interest Loan", "explanation": "For agricultural needs." },
+                "hi": { "name": "किसान क्रेडिट कार्ड (KCC)", "benefit": "कम ब्याज ऋण", "explanation": "कृषि आवश्यकताओं के लिए।" },
+                "mr": { "name": "किसान क्रेडिट कार्ड (KCC)", "benefit": "कमी व्याज कर्ज", "explanation": "कृषी गरजांसाठी।" },
+                "min_age": 18, "max_age": 75, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "farmer", "documents": ["Land Records", "ID Proof"], "link": "https://www.nabard.org/" 
+            },
+            { 
+                "en": { "name": "PM Jeevan Jyoti Bima", "benefit": "₹2 Lakh Life Cover", "explanation": "Term insurance." },
+                "hi": { "name": "पीएम जीवन ज्योति बीमा", "benefit": "₹2 लाख जीवन कवर", "explanation": "मियादी बीमा।" },
+                "mr": { "name": "पीएम जीवन ज्योती विमा", "benefit": "₹२ लाख जीवन विमा", "explanation": "मुदत विमा।" },
+                "min_age": 18, "max_age": 50, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "any", "documents": ["Bank Consent", "Aadhar"], "link": "https://jansuraksha.gov.in/" 
+            },
+            { 
+                "en": { "name": "PM Suraksha Bima Yojana", "benefit": "₹2 Lakh Accident Cover", "explanation": "Accidental insurance." },
+                "hi": { "name": "पीएम सुरक्षा बीमा योजना", "benefit": "₹2 लाख दुर्घटना कवर", "explanation": "दुर्घटना बीमा।" },
+                "mr": { "name": "पीएम सुरक्षा विमा योजना", "benefit": "₹२ लाख अपघात विमा", "explanation": "अपघात विमा।" },
+                "min_age": 18, "max_age": 70, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "any", "documents": ["Bank Consent", "Aadhar"], "link": "https://jansuraksha.gov.in/" 
+            },
+            { 
+                "en": { "name": "PM Employment Generation", "benefit": "Subsidy up to 35%", "explanation": "For starting industries." },
+                "hi": { "name": "पीएम रोजगार सृजन", "benefit": "35% तक सब्सिडी", "explanation": "उद्योग शुरू करने के लिए।" },
+                "mr": { "name": "पीएम रोजगार निर्मिती", "benefit": "३५% पर्यंत सबसिडी", "explanation": "उद्योग सुरू करण्यासाठी।" },
+                "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "business", "documents": ["Project Report", "Aadhar"], "link": "https://www.kviconline.gov.in/" 
+            },
+            { 
+                "en": { "name": "Post Matric Scholarship", "benefit": "Fee Waiver", "explanation": "Higher education help." },
+                "hi": { "name": "पोस्ट मैट्रिक छात्रवृत्ति", "benefit": "शुल्क छूट", "explanation": "उच्च शिक्षा में मदद।" },
+                "mr": { "name": "पोस्ट मॅट्रिक शिष्यवृत्ती", "benefit": "शुल्क माफी", "explanation": "उच्च शिक्षणासाठी मदत।" },
+                "min_age": 15, "max_age": 30, "max_income": 250000, "gender": "any", "caste": "sc", "occupation": "student", "documents": ["Caste Cert", "Marksheet"], "link": "https://socialjustice.gov.in/" 
+            },
+            { 
+                "en": { "name": "Mahila Samman Savings", "benefit": "7.5% Fixed Interest", "explanation": "Small savings for women." },
+                "hi": { "name": "महिला सम्मान बचत", "benefit": "7.5% निश्चित ब्याज", "explanation": "महिलाओं के लिए छोटी बचत।" },
+                "mr": { "name": "महिला सन्मान बचत", "benefit": "७.५% निश्चित व्याज", "explanation": "महिलांसाठी अल्प बचत।" },
+                "min_age": 0, "max_age": 100, "gender": "female", "caste": "any", "occupation": "any", "max_income": 10000000, "documents": ["Aadhar", "PAN Card"], "link": "https://www.indiapost.gov.in/" 
+            },
+            { 
+                "en": { "name": "Deendayal Antyodaya (DAY)", "benefit": "SHG Support", "explanation": "Livelihood for poor." },
+                "hi": { "name": "दीनदयाल अंत्योदय (DAY)", "benefit": "SHG सहायता", "explanation": "गरीबों के लिए आजीविका।" },
+                "mr": { "name": "दीनदयाळ अंत्योदय (DAY)", "benefit": "SHG मदत", "explanation": "गरिबांसाठी उपजीविका।" },
+                "min_age": 18, "max_age": 60, "max_income": 100000, "gender": "any", "caste": "any", "occupation": "any", "documents": ["BPL Cert", "Aadhar"], "link": "https://aajeevika.gov.in/" 
+            },
+            { 
+                "en": { "name": "Vidyalakshmi Loan", "benefit": "Education Loan", "explanation": "Single portal for loans." },
+                "hi": { "name": "विद्यालक्ष्मी ऋण", "benefit": "शिक्षा ऋण", "explanation": "ऋण के लिए एकल पोर्टल।" },
+                "mr": { "name": "विद्यालक्ष्मी कर्ज", "benefit": "शिक्षण कर्ज", "explanation": "कर्जासाठी एकल पोर्टल।" },
+                "min_age": 17, "max_age": 35, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "student", "documents": ["Admission Proof", "PAN"], "link": "https://www.vidyalakshmi.co.in/" 
+            },
+            { 
+                "en": { "name": "PM Swasthya Suraksha", "benefit": "Tertiary Healthcare", "explanation": "Better hospital treatment." },
+                "hi": { "name": "पीएम स्वास्थ्य सुरक्षा", "benefit": "तृतीयक स्वास्थ्य सेवा", "explanation": "बेहतर अस्पताल उपचार।" },
+                "mr": { "name": "पीएम स्वास्थ्य सुरक्षा", "benefit": "तृतीयक आरोग्य सेवा", "explanation": "चांगले रुग्णालय उपचार।" },
+                "min_age": 0, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "any", "documents": ["Aadhar"], "link": "https://pmssy-mohfw.nic.in/" 
+            }
         ];
 
-        function speakScheme(name, benefit, explanation, lang) {
+        function speakText(text, lang) {
             window.speechSynthesis.cancel();
-            const msg = new SpeechSynthesisUtterance(`${name}. ${benefit}. ${explanation}`);
+            const msg = new SpeechSynthesisUtterance(text);
             msg.lang = lang === 'hi' ? 'hi-IN' : (lang === 'mr' ? 'mr-IN' : 'en-US');
             window.speechSynthesis.speak(msg);
         }
@@ -96,46 +266,41 @@
             if (!userData) { window.location.href = "index.html"; return; }
 
             const lang = userData.lang || 'en';
-            const outputDiv = document.getElementById("output");
             document.getElementById("res-title").innerText = langPack[lang].title;
 
-            // FILTER LOGIC
             const matched = allSchemes.filter(s => {
                 const age = parseInt(userData.age);
                 const income = parseInt(userData.income);
                 const occInput = userData.occupation.toLowerCase();
+                const userCaste = userData.caste.toLowerCase();
 
                 return age >= s.min_age && age <= s.max_age &&
                        income <= s.max_income &&
                        (s.gender === "any" || s.gender.toLowerCase() === userData.gender.toLowerCase()) &&
-                       (s.caste === "any" || s.caste.toLowerCase() === userData.caste.toLowerCase()) &&
+                       (s.caste === "any" || s.caste.toLowerCase() === userCaste) &&
                        (s.occupation === "any" || occInput.includes(s.occupation.toLowerCase()));
             });
 
+            const outputDiv = document.getElementById("output");
             if (matched.length === 0) {
                 outputDiv.innerHTML = `<div class="no-results"><h3>${langPack[lang].none}</h3></div>`;
             } else {
-                outputDiv.innerHTML = `<div class="grid">` + matched.map(s => `
-                <div class="card">
-                    <h3>${s.name}</h3>
-                    <p><b>Benefit:</b> ${s.benefit}</p>
-                    <div class="explanation">✨ ${s.explanation}</div>
-                    <div class="docs">📄 <b>Required Documents:</b><br>${s.documents.join(", ")}</div>
-                    <div class="actions">
-                        <button class="btn-action" onclick="speakScheme('${s.name.replace(/'/g, "")}', '${s.benefit}', '', '${lang}')">${langPack[lang].speak}</button>
-                        <button class="btn-action" onclick="shareScheme('${s.name}', '${s.link}')">${langPack[lang].share}</button>
-                        <a href="${s.link}" class="btn-apply" target="_blank">${langPack[lang].btn}</a>
-                    </div>
-                </div>`).join('') + `</div>`;
+                outputDiv.innerHTML = `<div class="grid">` + matched.map((s, index) => {
+                    const info = s[lang] || s['en'];
+                    return `
+                    <div class="card" style="animation-delay: ${index * 0.1}s">
+                        <h3>${info.name}</h3>
+                        <span class="benefit-tag">💰 ${info.benefit}</span>
+                        <div class="explanation">✨ ${info.explanation}</div>
+                        <div class="docs">📄 <b>${langPack[lang].docLab}:</b><br>${s.documents.join(", ")}</div>
+                        <div class="actions">
+                            <button class="btn-action" onclick="speakText('${info.name}. ${info.benefit}.', '${lang}')">${langPack[lang].speak}</button>
+                            <button class="btn-action" onclick="shareScheme('${info.name}', '${s.link}')">${langPack[lang].share}</button>
+                            <a href="${s.link}" class="btn-apply" target="_blank">${langPack[lang].btn}</a>
+                        </div>
+                    </div>`;
+                }).join('') + `</div>`;
             }
-        }
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('Sahayak PWA Ready!'))
-                    .catch(err => console.log('PWA Registration Failed', err));
-            });
         }
 
         window.onload = loadResults;
