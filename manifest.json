@@ -2,7 +2,7 @@
   "name": "Sahayak AI: Govt Schemes",
   "short_name": "Sahayak",
   "description": "Find and listen to government schemes in Hindi and Marathi.",
-  "start_url": "/index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#38bdf8",
