@@ -11,138 +11,24 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <style>
-        body {
-            background: #0f172a;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 20px;
-            margin: 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-bottom: 100px;
-        }
-
-        .header-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .btn-back {
-            background: #334155;
-            color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-
-        .btn-back:hover {
-            background: #475569;
-        }
-
-        #res-title {
-            text-align: center;
-            color: #38bdf8;
-            font-size: 2rem;
-            margin: 20px 0;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: #1e293b;
-            padding: 25px;
-            border-radius: 16px;
-            border-top: 6px solid #38bdf8;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .explanation {
-            font-size: 0.9em;
-            color: #94a3b8;
-            font-style: italic;
-            border-left: 3px solid #38bdf8;
-            padding-left: 10px;
-            margin: 15px 0;
-        }
-
-        .docs {
-            background: #334155;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.85em;
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-
-        .actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .btn-action {
-            background: #334155;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .btn-action:hover {
-            background: #475569;
-        }
-
-        .btn-apply {
-            grid-column: span 2;
-            background: #38bdf8;
-            color: #0f172a;
-            text-align: center;
-            padding: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-
-        .btn-apply:hover {
-            background: #7dd3fc;
-        }
-
-        .no-results {
-            text-align: center;
-            margin-top: 100px;
-            color: #94a3b8;
-        }
-
-        #noupe-root {
-            z-index: 9999;
-        }
+        body { background: #0f172a; color: white; font-family: 'Segoe UI', sans-serif; padding: 20px; margin: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding-bottom: 100px; }
+        .header-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+        .btn-back { background: #334155; color: white; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; transition: 0.2s; }
+        .btn-back:hover { background: #475569; }
+        #res-title { text-align: center; color: #38bdf8; font-size: 2rem; margin: 20px 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+        .card { background: #1e293b; padding: 25px; border-radius: 16px; border-top: 6px solid #38bdf8; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); transition: 0.3s; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-5px); }
+        .explanation { font-size: 0.9em; color: #94a3b8; font-style: italic; border-left: 3px solid #38bdf8; padding-left: 10px; margin: 15px 0; }
+        .docs { background: #334155; padding: 12px; border-radius: 8px; font-size: 0.85em; margin-bottom: 20px; flex-grow: 1; }
+        .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .btn-action { background: #334155; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn-action:hover { background: #475569; }
+        .btn-apply { grid-column: span 2; background: #38bdf8; color: #0f172a; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.2s; }
+        .btn-apply:hover { background: #7dd3fc; }
+        .no-results { text-align: center; margin-top: 100px; color: #94a3b8; }
+        #noupe-root { z-index: 9999; }
     </style>
 </head>
 <body>
@@ -164,24 +50,48 @@
             mr: { title: "तुमच्या पात्र योजना", none: "❌ कोणतीही योजना सापडली नाही.", btn: "आता अर्ज करा", speak: "🔊 ऐका", share: "📲 शेअर करा" }
         };
 
+        // 25 SCHEMES DATABASE
+        const allSchemes = [
+            { "name": "PM-Kisan Samman Nidhi", "min_age": 18, "max_age": 100, "max_income": 500000, "gender": "any", "caste": "any", "occupation": "farmer", "benefit": "₹6,000/year", "explanation": "Direct financial support for farmers.", "documents": ["Aadhar", "Land Records"], "link": "https://pmkisan.gov.in/" },
+            { "name": "PM Matru Vandana Yojana", "min_age": 19, "max_age": 45, "max_income": 800000, "gender": "female", "caste": "any", "occupation": "any", "benefit": "₹5,000 Incentives", "explanation": "Pregnancy support and incentives.", "documents": ["MCP Card", "Aadhar"], "link": "https://wcd.nic.in/" },
+            { "name": "PM Vishwakarma", "min_age": 18, "max_age": 100, "max_income": 1000000, "gender": "any", "caste": "any", "occupation": "artisan", "benefit": "₹15,000 Toolkit", "explanation": "Support for traditional artisans.", "documents": ["Aadhar", "Skill ID"], "link": "https://pmvishwakarma.gov.in/" },
+            { "name": "Ayushman Bharat (PM-JAY)", "min_age": 0, "max_age": 100, "max_income": 250000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "₹5 Lakh Insurance", "explanation": "Free hospital treatment.", "documents": ["Ration Card", "Aadhar"], "link": "https://nha.gov.in/" },
+            { "name": "Sukanya Samriddhi Yojana", "min_age": 0, "max_age": 10, "max_income": 10000000, "gender": "female", "caste": "any", "occupation": "student", "benefit": "High Interest Savings", "explanation": "For girl child's future.", "documents": ["Birth Certificate", "Aadhar"], "link": "https://www.indiapost.gov.in/" },
+            { "name": "PM Awas Yojana (Gramin)", "min_age": 18, "max_age": 100, "max_income": 300000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "Funds for House", "explanation": "Build your own home.", "documents": ["Aadhar", "Job Card"], "link": "https://pmayg.nic.in/" },
+            { "name": "Atal Pension Yojana", "min_age": 18, "max_age": 40, "max_income": 1000000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "Monthly Pension", "explanation": "Pension after age 60.", "documents": ["Bank Account", "Aadhar"], "link": "https://www.npscra.nsdl.co.in/" },
+            { "name": "PM Ujjwala Yojana", "min_age": 18, "max_age": 100, "max_income": 200000, "gender": "female", "caste": "any", "occupation": "any", "benefit": "Free Gas Connection", "explanation": "Clean cooking fuel.", "documents": ["BPL Card", "Aadhar"], "link": "https://www.pmuy.gov.in/" },
+            { "name": "Stand-Up India", "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "female", "caste": "sc", "occupation": "business", "benefit": "₹10L - ₹1Cr Loan", "explanation": "For new businesses.", "documents": ["Project Report", "Caste Cert"], "link": "https://www.standupmitra.in/" },
+            { "name": "MGNREGA", "min_age": 18, "max_age": 60, "max_income": 1000000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "100 Days Work", "explanation": "Guaranteed employment.", "documents": ["Job Card", "Aadhar"], "link": "https://nrega.nic.in/" },
+            { "name": "PM Shram Yogi Maandhan", "min_age": 18, "max_age": 40, "max_income": 180000, "gender": "any", "caste": "any", "occupation": "worker", "benefit": "₹3,000 Pension", "explanation": "For unorganized workers.", "documents": ["Aadhar", "Bank Passbook"], "link": "https://maandhan.in/" },
+            { "name": "PM Mudra Yojana", "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "business", "benefit": "Loan up to ₹10L", "explanation": "Small business funding.", "documents": ["Business Plan", "Aadhar"], "link": "https://www.mudra.org.in/" },
+            { "name": "PM SVANidhi", "min_age": 18, "max_age": 100, "max_income": 500000, "gender": "any", "caste": "any", "occupation": "vendor", "benefit": "Working Capital Loan", "explanation": "For street vendors.", "documents": ["Vending Cert", "Aadhar"], "link": "https://pmsvanidhi.mohua.gov.in/" },
+            { "name": "National Scholarship (NSP)", "min_age": 6, "max_age": 25, "max_income": 200000, "gender": "any", "caste": "any", "occupation": "student", "benefit": "Study Scholarship", "explanation": "Financial help for school.", "documents": ["Marksheet", "Income Cert"], "link": "https://scholarships.gov.in/" },
+            { "name": "PM Fasal Bima Yojana", "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "farmer", "benefit": "Crop Insurance", "explanation": "Support for crop loss.", "documents": ["Land Records", "Sowing Cert"], "link": "https://pmfby.gov.in/" },
+            { "name": "PM Daksh Yojana", "min_age": 18, "max_age": 45, "max_income": 300000, "gender": "any", "caste": "sc", "occupation": "any", "benefit": "Skill Training", "explanation": "Free skill development.", "documents": ["Caste Cert", "Aadhar"], "link": "https://pmdaksh.dosje.gov.in/" },
+            { "name": "Kisan Credit Card (KCC)", "min_age": 18, "max_age": 75, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "farmer", "benefit": "Low Interest Loan", "explanation": "For agricultural needs.", "documents": ["Land Records", "ID Proof"], "link": "https://www.nabard.org/" },
+            { "name": "PM Jeevan Jyoti Bima", "min_age": 18, "max_age": 50, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "₹2 Lakh Life Cover", "explanation": "Term insurance.", "documents": ["Bank Consent", "Aadhar"], "link": "https://jansuraksha.gov.in/" },
+            { "name": "PM Suraksha Bima Yojana", "min_age": 18, "max_age": 70, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "₹2 Lakh Accident Cover", "explanation": "Accidental insurance.", "documents": ["Bank Consent", "Aadhar"], "link": "https://jansuraksha.gov.in/" },
+            { "name": "PM Employment Generation", "min_age": 18, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "business", "benefit": "Subsidy up to 35%", "explanation": "For starting industries.", "documents": ["Project Report", "Aadhar"], "link": "https://www.kviconline.gov.in/" },
+            { "name": "Post Matric Scholarship", "min_age": 15, "max_age": 30, "max_income": 250000, "gender": "any", "caste": "sc", "occupation": "student", "benefit": "Fee Waiver", "explanation": "Higher education help.", "documents": ["Caste Cert", "Marksheet"], "link": "https://socialjustice.gov.in/" },
+            { "name": "Mahila Samman Savings", "min_age": 0, "max_age": 100, "gender": "female", "caste": "any", "occupation": "any", "max_income": 10000000, "benefit": "7.5% Fixed Interest", "explanation": "Small savings for women.", "documents": ["Aadhar", "PAN Card"], "link": "https://www.indiapost.gov.in/" },
+            { "name": "Deendayal Antyodaya (DAY)", "min_age": 18, "max_age": 60, "max_income": 100000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "SHG Support", "explanation": "Livelihood for poor.", "documents": ["BPL Cert", "Aadhar"], "link": "https://aajeevika.gov.in/" },
+            { "name": "Vidyalakshmi Loan", "min_age": 17, "max_age": 35, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "student", "benefit": "Education Loan", "explanation": "Single portal for loans.", "documents": ["Admission Proof", "PAN"], "link": "https://www.vidyalakshmi.co.in/" },
+            { "name": "PM Swasthya Suraksha", "min_age": 0, "max_age": 100, "max_income": 10000000, "gender": "any", "caste": "any", "occupation": "any", "benefit": "Tertiary Healthcare", "explanation": "Better hospital treatment.", "documents": ["Aadhar"], "link": "https://pmssy-mohfw.nic.in/" }
+        ];
+
         function speakScheme(name, benefit, explanation, lang) {
             window.speechSynthesis.cancel();
-            const text = `${name}. ${benefit}. ${explanation}`;
-            const msg = new SpeechSynthesisUtterance(text);
-
-            if (lang === 'hi') msg.lang = 'hi-IN';
-            else if (lang === 'mr') msg.lang = 'mr-IN';
-            else msg.lang = 'en-US';
-
+            const msg = new SpeechSynthesisUtterance(`${name}. ${benefit}. ${explanation}`);
+            msg.lang = lang === 'hi' ? 'hi-IN' : (lang === 'mr' ? 'mr-IN' : 'en-US');
             window.speechSynthesis.speak(msg);
         }
 
         function shareScheme(name, link) {
-            const message = `*Sahayak AI Selection* \n\n*Scheme:* ${name}\n*Apply here:* ${link}\n\n_Generated by Sahayak AI_`;
+            const message = `*Sahayak AI* \n\n*Scheme:* ${name}\n*Apply:* ${link}`;
             window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        async function loadResults() {
+        function loadResults() {
             const userData = JSON.parse(localStorage.getItem("userData"));
             if (!userData) { window.location.href = "index.html"; return; }
 
@@ -189,52 +99,37 @@
             const outputDiv = document.getElementById("output");
             document.getElementById("res-title").innerText = langPack[lang].title;
 
-            try {
-                // 1. Fetch JSON directly
-                const response = await fetch("schemes.json");
-                const allSchemes = await response.json();
+            // FILTER LOGIC
+            const matched = allSchemes.filter(s => {
+                const age = parseInt(userData.age);
+                const income = parseInt(userData.income);
+                const occInput = userData.occupation.toLowerCase();
 
-                // 2. Filter Logic
-                const matchedSchemes = allSchemes.filter(s => {
-                    const ageMatch = parseInt(userData.age) >= s.min_age && parseInt(userData.age) <= s.max_age;
-                    const incomeMatch = parseInt(userData.income) <= s.max_income;
-                    const genderMatch = s.gender === "any" || s.gender.toLowerCase() === userData.gender.toLowerCase();
-                    const occMatch = s.occupation === "any" || userData.occupation.toLowerCase().includes(s.occupation.toLowerCase());
-                    const casteMatch = s.caste === "any" || s.caste.toLowerCase() === userData.caste.toLowerCase();
+                return age >= s.min_age && age <= s.max_age &&
+                       income <= s.max_income &&
+                       (s.gender === "any" || s.gender.toLowerCase() === userData.gender.toLowerCase()) &&
+                       (s.caste === "any" || s.caste.toLowerCase() === userData.caste.toLowerCase()) &&
+                       (s.occupation === "any" || occInput.includes(s.occupation.toLowerCase()));
+            });
 
-                    return ageMatch && incomeMatch && genderMatch && occMatch && casteMatch;
-                });
-
-                // 3. Render Cards
-                if (matchedSchemes.length === 0) {
-                    outputDiv.innerHTML = `<div class="no-results"><h3>${langPack[lang].none}</h3></div>`;
-                } else {
-                    outputDiv.innerHTML = `<div class="grid">` + matchedSchemes.map(s => {
-                        const safeName = s.name.replace(/'/g, "\\'");
-                        const safeBenefit = s.benefit.replace(/'/g, "\\'");
-                        const safeExplanation = s.explanation.replace(/'/g, "\\'");
-
-                        return `
-                        <div class="card">
-                            <h3>${s.name}</h3>
-                            <p><b>Benefit:</b> ${s.benefit}</p>
-                            <div class="explanation">✨ ${s.explanation}</div>
-                            <div class="docs">📄 <b>Required Documents:</b><br>${s.documents.join(", ")}</div>
-                            <div class="actions">
-                                <button class="btn-action" onclick="speakScheme('${safeName}', '${safeBenefit}', '${safeExplanation}', '${lang}')">${langPack[lang].speak}</button>
-                                <button class="btn-action" onclick="shareScheme('${safeName}', '${s.link}')">${langPack[lang].share}</button>
-                                <a href="${s.link}" class="btn-apply" target="_blank">${langPack[lang].btn}</a>
-                            </div>
-                        </div>`;
-                    }).join('') + `</div>`;
-                }
-            } catch (err) {
-                console.error(err);
-                outputDiv.innerHTML = `<div class="no-results"><h3>⚠️ Error loading schemes.json!</h3></div>`;
+            if (matched.length === 0) {
+                outputDiv.innerHTML = `<div class="no-results"><h3>${langPack[lang].none}</h3></div>`;
+            } else {
+                outputDiv.innerHTML = `<div class="grid">` + matched.map(s => `
+                <div class="card">
+                    <h3>${s.name}</h3>
+                    <p><b>Benefit:</b> ${s.benefit}</p>
+                    <div class="explanation">✨ ${s.explanation}</div>
+                    <div class="docs">📄 <b>Required Documents:</b><br>${s.documents.join(", ")}</div>
+                    <div class="actions">
+                        <button class="btn-action" onclick="speakScheme('${s.name.replace(/'/g, "")}', '${s.benefit}', '', '${lang}')">${langPack[lang].speak}</button>
+                        <button class="btn-action" onclick="shareScheme('${s.name}', '${s.link}')">${langPack[lang].share}</button>
+                        <a href="${s.link}" class="btn-apply" target="_blank">${langPack[lang].btn}</a>
+                    </div>
+                </div>`).join('') + `</div>`;
             }
         }
 
-        // PWA Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
